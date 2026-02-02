@@ -2,6 +2,7 @@ baseURL: "https://agenticweb.md/"
 languageCode: en-us
 title: agenticweb.md
 theme: PaperMod
+timeZone: Europe/Berlin
 
 # Enable robots.txt generation
 enableRobotsTXT: true
