@@ -35,9 +35,13 @@ agenticweb.md/
 │   ├── saas/agenticweb.md       # Stacklane
 │   └── newspaper/agenticweb.md  # Atlas Journal
 ├── tools/                       # Tooling
-│   └── validator/               # @agenticweb-md/validator npm package
-│       ├── src/index.ts         # Validation functions
-│       ├── src/cli.ts           # CLI tool
+│   ├── validator/               # @agenticweb-md/validator npm package
+│   │   ├── src/index.ts         # Validation functions
+│   │   ├── src/cli.ts           # CLI tool
+│   │   └── package.json
+│   └── generator/               # @agenticweb-md/generator npm package
+│       ├── src/index.ts         # Generation functions
+│       ├── src/cli.ts           # Interactive CLI tool
 │       └── package.json
 ├── skills/                      # Example SKILL.md files
 ├── agenticweb.md                # Self-example (dogfooding)
@@ -81,6 +85,7 @@ agenticweb.md/
 
 ### Tooling
 - **Validator CLI:** `npx @agenticweb-md/validator <file-or-url>`
+- **Generator CLI:** `npx @agenticweb-md/generator` (interactive)
 - **Web Generator:** Interactive form at /generator/
 - **JSON Schema:** For programmatic validation
 

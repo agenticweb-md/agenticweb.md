@@ -2,6 +2,12 @@
 
 > **Your Organization's Front Door to the Agentic Web**
 
+[![Website](https://img.shields.io/badge/website-agenticweb.md-blue)](https://agenticweb.md)
+[![npm validator](https://img.shields.io/npm/v/@agenticweb-md/validator)](https://www.npmjs.com/package/@agenticweb-md/validator)
+[![npm generator](https://img.shields.io/npm/v/@agenticweb-md/generator)](https://www.npmjs.com/package/@agenticweb-md/generator)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+
 `agenticweb.md` is a single discovery file you publish at your domain root:
 
 ```
@@ -11,9 +17,9 @@ https://example.com/agenticweb.md
 It answers key questions for agents and marketplaces **before** they load your full specs:
 
 1. **Who are you?** — organization metadata, jurisdiction
-2. **What's allowed?** — permissions (read, cite, train, execute)
-3. **Is it safe?** — compliance (GDPR, AI Act risk level)
-4. **What do you offer?** — capability index with pre-flight info
+2. **What do you offer?** — capability index with pre-flight info
+3. **What's allowed?** — per-capability permissions (read, cite, train, execute)
+4. **Is it safe?** — per-capability compliance (GDPR, AI Act risk level)
 5. **Where is it?** — canonical URLs to Skills, MCP, APIs, etc.
 
 It **does not** replace SKILL.md, MCP, OpenAPI, or A2A. It links to them.
@@ -25,7 +31,6 @@ It **does not** replace SKILL.md, MCP, OpenAPI, or A2A. It links to them.
 ```yaml
 ---
 agenticweb: "1"
-name: example-org
 description: "APIs and skills for payment processing."
 updated: "2026-02-02"
 
@@ -38,18 +43,6 @@ organization:
 contacts:
   support: "mailto:support@example.com"
   security: "mailto:security@example.com"
-
-permissions:
-  read: true
-  cite: true
-  summarize: true
-  train: false
-  execute: true
-  cache: true
-
-compliance:
-  gdpr_compliant: true
-  ai_act_risk_level: "minimal"
 
 trust:
   marketplaces:
@@ -67,6 +60,9 @@ capabilities:
     pricing_model: "freemium"
     auth_required: true
     auth_registration: "https://developers.example.com/signup"
+    permissions:
+      read: true
+      execute: true
 
   - kind: skill
     id: invoice-assistant
@@ -97,6 +93,7 @@ capabilities:
 | `mcp` | MCP server endpoint | `mcp://api.example.com/tools` |
 | `a2a` | A2A Agent Card | `https://example.com/.well-known/agent.json` |
 | `api` | REST/GraphQL API | `https://api.example.com/v1` |
+| `model` | AI model endpoint | `https://api.example.com/v1/chat` |
 | `docs` | llms.txt or docs | `https://docs.example.com/llms.txt` |
 | `data` | Datasets | `https://example.com/data/catalog.json` |
 | `ui` | UI widgets | `https://example.com/widgets/checkout` |
@@ -118,7 +115,9 @@ _agenticweb.example.com TXT "url=https://cdn.example.com/agenticweb.md"
 
 ---
 
-## Validation
+## CLI Tools
+
+### Validator
 
 ```bash
 # Validate via URL
@@ -126,6 +125,16 @@ npx @agenticweb-md/validator https://example.com/agenticweb.md
 
 # Validate local file
 npx @agenticweb-md/validator ./agenticweb.md
+```
+
+### Generator
+
+```bash
+# Interactive generator
+npx @agenticweb-md/generator
+
+# Specify output file
+npx @agenticweb-md/generator -o ./my-org/agenticweb.md
 ```
 
 ---
@@ -139,6 +148,7 @@ agenticweb.md/
 ├── schema/                  # JSON Schema for validation
 ├── examples/                # Industry examples (bank, ecommerce, saas, media)
 ├── tools/validator/         # CLI validator (@agenticweb-md/validator)
+├── tools/generator/         # CLI generator (@agenticweb-md/generator)
 ├── skills/                  # Example skills
 ├── agenticweb.md            # Self-example (dogfooding)
 └── README.md                # This file
@@ -153,6 +163,28 @@ agenticweb.md/
 - **Quick Start:** https://agenticweb.md/quickstart/
 - **Generator:** https://agenticweb.md/generator/
 - **Examples:** https://agenticweb.md/examples/
+
+---
+
+## Contributing
+
+We welcome contributions! Please see our [AGENTS.md](./AGENTS.md) for development guidelines.
+
+---
+
+## Credits
+
+**agenticweb.md** is created and maintained by [innFactory GmbH](https://innfactory.de).
+
+- **Website:** [innfactory.de](https://innfactory.de)
+- **AI Solutions:** [innfactory.ai](https://innfactory.ai)
+- **GitHub:** [@innFactory](https://github.com/innFactory)
+
+### Open Standard Initiative
+
+We believe **agenticweb.md** should be an open standard for the entire agentic AI ecosystem. We would love to see this project adopted by a foundation such as the **Agentic AI Foundation** or similar organization to ensure broad industry adoption and long-term stewardship.
+
+If you're interested in sponsoring or adopting this standard, please reach out via [hello@agenticweb.md](mailto:hello@agenticweb.md).
 
 ---
 

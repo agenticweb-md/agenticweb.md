@@ -1,0 +1,425 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://agenticweb.md/schema/v1.json",
+  "title": "agenticweb.md",
+  "description": "Schema for agenticweb.md YAML frontmatter - A single discovery file for AI agent capabilities",
+  "type": "object",
+  "required": ["agenticweb", "description"],
+  "properties": {
+    "agenticweb": {
+      "type": "string",
+      "pattern": "^1(\\.0\\.0)?$",
+      "description": "Spec version identifier ('1' or '1.0.0')"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 400,
+      "description": "Discovery description for the organization (max 400 characters)"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date",
+      "description": "Last modification date (ISO 8601: YYYY-MM-DD)"
+    },
+    "organization": {
+      "$ref": "#/$defs/organization"
+    },
+    "contacts": {
+      "$ref": "#/$defs/contacts"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/link"
+      },
+      "description": "List of links to resources with optional permissions"
+    },
+    "trust": {
+      "$ref": "#/$defs/trust"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/capability"
+      },
+      "description": "List of capabilities offered by this organization"
+    }
+  },
+  "additionalProperties": {
+    "description": "Custom fields should be prefixed with x_"
+  },
+  "$defs": {
+    "organization": {
+      "type": "object",
+      "description": "Organization identity and legal imprint information",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Human display name (brand)"
+        },
+        "legal_name": {
+          "type": "string",
+          "description": "Full legal entity name"
+        },
+        "website": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://",
+          "description": "Primary website URL (HTTPS)"
+        },
+        "registration_id": {
+          "type": "string",
+          "description": "Official registration ID (LEI, DUNS, HRB, etc.)"
+        },
+        "vat_id": {
+          "type": "string",
+          "description": "VAT identification number"
+        },
+        "address": {
+          "$ref": "#/$defs/address"
+        },
+        "managing_director": {
+          "type": "string",
+          "description": "Responsible person (Geschäftsführer, CEO)"
+        },
+        "certifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/certification"
+          },
+          "description": "Organization-level certifications (ISO 27001, TISAX, etc.)"
+        }
+      }
+    },
+    "address": {
+      "type": "object",
+      "description": "Physical address",
+      "properties": {
+        "street": {
+          "type": "string",
+          "description": "Street address"
+        },
+        "city": {
+          "type": "string",
+          "description": "City"
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "Postal/ZIP code"
+        },
+        "country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "ISO 3166-1 alpha-2 country code"
+        }
+      }
+    },
+    "certification": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Certification name (e.g., 'ISO 27001', 'TISAX', 'SOC 2')"
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date",
+          "description": "Expiration date (ISO 8601)"
+        },
+        "level": {
+          "type": "string",
+          "description": "Certification level if applicable (e.g., TISAX 'AL3')"
+        }
+      }
+    },
+    "contacts": {
+      "type": "object",
+      "description": "Contact information (mailto: or https: URIs)",
+      "properties": {
+        "support": {
+          "type": "string",
+          "format": "uri",
+          "description": "General support contact"
+        },
+        "security": {
+          "type": "string",
+          "format": "uri",
+          "description": "Security issues and vulnerability reports"
+        },
+        "dpo": {
+          "type": "string",
+          "format": "uri",
+          "description": "Data Protection Officer (GDPR)"
+        },
+        "sales": {
+          "type": "string",
+          "format": "uri",
+          "description": "Sales inquiries"
+        },
+        "press": {
+          "type": "string",
+          "format": "uri",
+          "description": "Press and media inquiries"
+        }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "link": {
+      "type": "object",
+      "required": ["name", "url"],
+      "description": "A link to a resource with optional permissions",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Link identifier (e.g., 'privacy', 'docs', 'twitter')"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "The link URL"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description"
+        },
+        "permissions": {
+          "$ref": "#/$defs/permissions"
+        }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "description": "What AI agents are allowed to do with this resource",
+      "properties": {
+        "read": {
+          "type": "boolean",
+          "default": true,
+          "description": "Agent may access and read the content"
+        },
+        "cite": {
+          "type": "boolean",
+          "default": true,
+          "description": "Agent may quote content with attribution"
+        },
+        "summarize": {
+          "type": "boolean",
+          "default": true,
+          "description": "Agent may summarize content for users"
+        },
+        "train": {
+          "type": "boolean",
+          "default": false,
+          "description": "Content may be used for AI model training"
+        },
+        "execute": {
+          "type": "boolean",
+          "default": false,
+          "description": "Agent may interact with APIs/tools"
+        },
+        "cache": {
+          "type": "boolean",
+          "default": true,
+          "description": "Agent may store/cache content locally"
+        }
+      }
+    },
+    "trust": {
+      "type": "object",
+      "description": "Trust signals for verification",
+      "properties": {
+        "allowed_origins": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "List of origins controlled by this organization"
+        },
+        "marketplaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/marketplace_listing"
+          },
+          "description": "External marketplace listings that corroborate identity"
+        }
+      }
+    },
+    "marketplace_listing": {
+      "type": "object",
+      "required": ["platform", "url"],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "description": "Platform identifier (e.g., 'openai-gpts', 'mcp-registry')"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the listing"
+        },
+        "listing_type": {
+          "type": "string",
+          "enum": ["agent", "mcp", "api", "organization"],
+          "description": "Type of listing"
+        }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "required": ["kind", "id", "description", "url"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["skill", "mcp", "api", "a2a", "model", "docs", "data", "ui", "commerce"],
+          "description": "Type of capability"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Stable identifier (lowercase, alphanumeric, hyphens)"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "description": "Short description (max 160 chars)"
+        },
+        "url": {
+          "type": "string",
+          "description": "Canonical URL or endpoint"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "beta", "deprecated"],
+          "default": "active",
+          "description": "Lifecycle status"
+        },
+        "pricing_model": {
+          "type": "string",
+          "enum": ["free", "freemium", "paid"],
+          "description": "Pricing model"
+        },
+        "auth_required": {
+          "type": "boolean",
+          "description": "Whether authentication is required"
+        },
+        "auth_registration": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to register for credentials"
+        },
+        "permissions": {
+          "$ref": "#/$defs/permissions"
+        },
+        "compliance": {
+          "$ref": "#/$defs/capability_compliance"
+        },
+        "transport": {
+          "type": "string",
+          "enum": ["stdio", "http", "sse"],
+          "description": "Transport protocol (for mcp)"
+        },
+        "schema": {
+          "type": "string",
+          "format": "uri",
+          "description": "API schema URL (for api, model)"
+        },
+        "format": {
+          "type": "string",
+          "description": "File/media format (for docs, data)"
+        },
+        "license": {
+          "type": "string",
+          "description": "License identifier (for data)"
+        },
+        "manifest": {
+          "type": "string",
+          "format": "uri",
+          "description": "UI manifest URL (for ui)"
+        },
+        "pricing": {
+          "type": "string",
+          "format": "uri",
+          "description": "Pricing page URL (for commerce)"
+        },
+        "refunds": {
+          "type": "string",
+          "format": "uri",
+          "description": "Refund policy URL (for commerce)"
+        },
+        "currencies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Supported currency codes (for commerce)"
+        },
+        "regions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Supported region codes (for commerce)"
+        },
+        "requires_user_confirmation": {
+          "type": "boolean",
+          "description": "User must confirm transactions (for commerce)"
+        },
+        "source": {
+          "type": "string",
+          "enum": ["huggingface", "github", "ollama", "custom"],
+          "description": "Model source platform (for model)"
+        },
+        "model_id": {
+          "type": "string",
+          "description": "Identifier on the source platform (for model)"
+        },
+        "model_card": {
+          "type": "string",
+          "format": "uri",
+          "description": "Link to model card with full details (for model)"
+        },
+        "api_compatibility": {
+          "type": "string",
+          "enum": ["openai", "gemini", "anthropic", "custom"],
+          "description": "API compatibility (for model)"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "kind": { "const": "mcp" } }
+          },
+          "then": {
+            "properties": {
+              "url": {
+                "pattern": "^mcp://"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "capability_compliance": {
+      "type": "object",
+      "description": "Compliance information for AI capabilities",
+      "properties": {
+        "ai_act_risk_level": {
+          "type": "string",
+          "enum": ["minimal", "limited", "high"],
+          "description": "EU AI Act risk classification for this capability"
+        },
+        "conformity_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to conformity assessment documentation"
+        },
+        "human_oversight_required": {
+          "type": "boolean",
+          "description": "Whether human oversight is required"
+        }
+      }
+    }
+  }
+}

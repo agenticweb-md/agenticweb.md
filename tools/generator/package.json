@@ -1,0 +1,56 @@
+{
+  "name": "@agenticweb-md/generator",
+  "version": "1.0.0",
+  "description": "Interactive CLI generator for agenticweb.md files",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "agenticweb-generator": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist/",
+    "schema/"
+  ],
+  "keywords": [
+    "agenticweb",
+    "agenticweb.md",
+    "ai-agent",
+    "discovery",
+    "generator",
+    "cli"
+  ],
+  "author": "agenticweb.md contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agenticweb-md/agenticweb.md.git",
+    "directory": "tools/generator"
+  },
+  "homepage": "https://agenticweb.md",
+  "bugs": {
+    "url": "https://github.com/agenticweb-md/agenticweb.md/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.2.1",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  }
+}

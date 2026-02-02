@@ -3,7 +3,7 @@
 > **Your Organization's Front Door to the Agentic Web**
 
 **Version:** 1.0.0  
-**Status:** Draft (pre-release)  
+**Status:** Stable  
 **Last Updated:** February 2026  
 **Repository:** https://github.com/agenticweb-md/agenticweb.md
 
@@ -72,7 +72,6 @@ Organizations need a single, authoritative place to say **who they are** and
 ```yaml
 ---
 agenticweb: "1"
-name: example-org
 description: "APIs and skills for payment processing."
 
 organization:

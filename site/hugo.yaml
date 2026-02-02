@@ -127,11 +127,20 @@ markup:
       unsafe: true
 
 # Output formats
+outputFormats:
+  llms-txt:
+    name: llms-txt
+    mediaType: text/plain
+    baseName: llms
+    isPlainText: true
+    notAlternative: true
+
 outputs:
   home:
     - HTML
     - RSS
     - JSON
+    - llms-txt
 
 # Taxonomies
 taxonomies:
