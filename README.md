@@ -184,7 +184,7 @@ We welcome contributions! Please see our [AGENTS.md](./AGENTS.md) for developmen
 
 We believe **agenticweb.md** should be an open standard for the entire agentic AI ecosystem. We would love to see this project adopted by a foundation such as the **Agentic AI Foundation** or similar organization to ensure broad industry adoption and long-term stewardship.
 
-If you're interested in sponsoring or adopting this standard, please reach out via [hello@agenticweb.md](mailto:hello@agenticweb.md).
+If you're interested in sponsoring or adopting this standard, please reach out via [info@innfactory.de](mailto:info@innfactory.de).
 
 ---
 
