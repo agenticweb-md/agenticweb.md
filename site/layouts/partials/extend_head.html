@@ -1,0 +1,133 @@
+{{/* ========================================
+    SEO Meta Tags
+    ======================================== */}}
+
+{{/* Basic SEO */}}
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
+<meta name="bingbot" content="index, follow">
+
+{{/* Author & Publisher */}}
+<meta name="author" content="innFactory GmbH">
+<meta name="publisher" content="innFactory GmbH">
+<meta name="copyright" content="innFactory GmbH">
+
+{{/* Geo & Language */}}
+<meta name="geo.region" content="DE-BY">
+<meta name="geo.placename" content="Rosenheim">
+<meta name="language" content="{{ .Lang }}">
+
+{{/* Topic & Category */}}
+<meta name="topic" content="AI Agent Discovery Standard">
+<meta name="category" content="Technology, AI, Standards">
+<meta name="coverage" content="Worldwide">
+<meta name="distribution" content="global">
+<meta name="rating" content="general">
+
+{{/* ========================================
+    Open Graph (Facebook, LinkedIn)
+    ======================================== */}}
+<meta property="og:site_name" content="agenticweb.md">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+
+{{/* ========================================
+    Twitter Card
+    ======================================== */}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@innaborsky">
+
+{{/* ========================================
+    Schema.org JSON-LD
+    ======================================== */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "agenticweb.md",
+  "alternateName": ["Agentic Web", "agenticweb"],
+  "url": "https://agenticweb.md/",
+  "description": "{{ site.Params.description }}",
+  "inLanguage": "en",
+  "publisher": {
+    "@type": "Organization",
+    "name": "innFactory GmbH",
+    "url": "https://innfactory.de",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Luitpoldstr. 9",
+      "addressLocality": "Rosenheim",
+      "postalCode": "83022",
+      "addressCountry": "DE"
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://agenticweb.md/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+{{- if eq .Kind "page" }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "{{ .Title }}",
+  "description": "{{ .Description | default .Summary | truncate 160 }}",
+  "url": "{{ .Permalink }}",
+  "datePublished": "{{ .Date.Format "2006-01-02" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+  "inLanguage": "{{ .Lang }}",
+  "author": {
+    "@type": "Organization",
+    "name": "innFactory GmbH"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "innFactory GmbH",
+    "url": "https://innfactory.de"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  }
+}
+</script>
+{{- end }}
+
+{{/* ========================================
+    Specification Schema (for spec page)
+    ======================================== */}}
+{{- if eq .Title "Specification" }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "agenticweb.md Specification v1.0.0",
+  "description": "The official specification for the agenticweb.md file format - a standardized way for organizations to publish their AI agent capabilities.",
+  "url": "{{ .Permalink }}",
+  "version": "1.0.0",
+  "author": {
+    "@type": "Organization",
+    "name": "innFactory GmbH"
+  },
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+{{- end }}
+
+{{/* ========================================
+    agenticweb.md Discovery
+    ======================================== */}}
+<link rel="agenticweb" href="/agenticweb.md" type="text/markdown">
+<meta name="agenticweb:version" content="1.0.0">
+
+{{/* ========================================
+    DNS Prefetch for Performance
+    ======================================== */}}
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

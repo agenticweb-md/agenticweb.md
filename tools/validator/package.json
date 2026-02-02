@@ -1,0 +1,59 @@
+{
+  "name": "@agenticweb-md/validator",
+  "version": "1.0.0",
+  "description": "Validate agenticweb.md files against the official schema",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "agenticweb-validator": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test",
+    "lint": "eslint src/",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist/",
+    "schema/"
+  ],
+  "keywords": [
+    "agenticweb",
+    "agenticweb.md",
+    "ai-agent",
+    "discovery",
+    "validator",
+    "schema"
+  ],
+  "author": "agenticweb.md contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agenticweb-md/agenticweb.md.git",
+    "directory": "tools/validator"
+  },
+  "homepage": "https://agenticweb.md",
+  "bugs": {
+    "url": "https://github.com/agenticweb-md/agenticweb.md/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "ajv-draft-04": "^1.0.0",
+    "ajv-formats": "^2.1.1",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  }
+}

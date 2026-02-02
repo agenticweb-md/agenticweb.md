@@ -1,0 +1,147 @@
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            {{- $label_text := (site.Params.label.text | default site.Title) }}
+            {{- if site.Title }}
+            <a href="{{ "" | relLangURL }}" accesskey="h" title="{{ $label_text }} (Alt + H)">
+                <img src="/images/agenticweb-md.png" alt="" aria-label="logo" height="35" class="site-logo">
+                <span class="logo-text">agenticweb.md</span>
+            </a>
+            {{- end }}
+        </div>
+
+        {{/* Mobile Burger Button */}}
+        <button id="menu-toggle" class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            <svg class="close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        {{- $currentPage := . }}
+        {{- $currentPath := .RelPermalink }}
+        {{- $currentLang := .Lang }}
+        <ul id="menu">
+            {{- range site.Menus.main }}
+            {{- if ne .Identifier "github" }}
+            {{- $menu_item_url := .URL | relLangURL }}
+            {{- $is_search := eq (site.GetPage .KeyName).Layout `search` }}
+            {{- $isActive := or (eq $currentPath $menu_item_url) (and (eq .Identifier "home") (eq $currentPath (printf "/%s/" $currentPage.Lang))) }}
+            <li>
+                {{- $isExternal := findRE "://" .URL }}
+                <a href="{{ if $isExternal }}{{ .URL }}{{ else }}{{ .URL | relLangURL }}{{ end }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
+                {{- cond $is_search (" accesskey=/" | safeHTMLAttr) ("" | safeHTMLAttr ) }}>
+                    <span {{- if $isActive }} class="active" {{- end }}>
+                        {{- .Pre }}
+                        {{- .Name -}}
+                        {{ .Post -}}
+                    </span>
+                </a>
+            </li>
+            {{- end }}
+            {{- end }}
+            
+            {{/* Mobile-only: Theme Toggle */}}
+            <li class="mobile-only menu-theme-toggle">
+                {{- if (not site.Params.disableThemeToggle) }}
+                <button id="theme-toggle-mobile" aria-label="Toggle theme" class="menu-icon-btn">
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span>{{ i18n "toggle_theme" | default "Toggle theme" }}</span>
+                </button>
+                {{- end }}
+            </li>
+            
+            {{/* Mobile-only: Language Link (shows current lang name, links to dropdown behavior) */}}
+            {{- if gt (len site.Languages) 1 }}
+            {{- $currentLangObj := index (where site.Languages "Lang" $currentLang) 0 }}
+            <li class="mobile-only menu-lang-link">
+                <button id="mobile-lang-toggle" class="menu-icon-btn" aria-label="Select language">
+                    {{ partial "flag-icon" $currentLang }}
+                    <span>{{ with $currentLangObj }}{{ .LanguageName }}{{ end }}</span>
+                    <svg class="dropdown-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" style="width:10px;height:6px;margin-left:auto;"><path d="M1 1l4 4 4-4"/></svg>
+                </button>
+            </li>
+            {{/* Mobile Language Options - hidden by default, shown when button clicked */}}
+            {{- range $langCode := (slice "ar" "zh" "nl" "en" "fr" "de" "ja" "ko" "pl" "pt" "ru" "es" "sv") }}
+            {{- $lang := index (where site.Languages "Lang" $langCode) 0 }}
+            {{- if and $lang (ne $langCode $currentLang) }}
+            <li class="mobile-only mobile-lang-option" style="display:none;">
+                <a href="{{ with index (where $.Page.Translations ".Lang" $langCode) 0 }}{{ .RelPermalink }}{{ else }}/{{ $langCode }}/{{ end }}" class="menu-icon-btn">
+                    {{ partial "flag-icon" $langCode }}
+                    <span>{{ $lang.LanguageName }}</span>
+                </a>
+            </li>
+            {{- end }}
+            {{- end }}
+            {{- end }}
+        </ul>
+
+        <div class="header-actions">
+            {{/* Theme Toggle - Desktop only */}}
+            {{- if (not site.Params.disableThemeToggle) }}
+            <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme" class="header-icon">
+                <svg id="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <svg id="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+            {{- end }}
+            
+            {{/* Language Dropdown - Desktop only */}}
+            {{- $translations := .Translations }}
+            {{- if or $translations (gt (len site.Languages) 1) }}
+            <div class="lang-dropdown">
+                <button class="lang-dropdown-toggle" aria-label="Select language" aria-expanded="false">
+                    {{ partial "flag-icon" $currentLang }}
+                    <svg class="dropdown-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+                </button>
+                <ul class="lang-dropdown-menu">
+                    {{/* Alphabetically ordered languages (by English name) */}}
+                    {{- range $langCode := (slice "ar" "zh" "nl" "en" "fr" "de" "ja" "ko" "pl" "pt" "ru" "es" "sv") }}
+                    {{- $lang := index (where site.Languages "Lang" $langCode) 0 }}
+                    {{- if $lang }}
+                    {{- $isCurrentLang := eq $langCode $currentLang }}
+                    <li>
+                        <a href="{{ if $isCurrentLang }}#{{ else }}{{ with index (where $.Page.Translations ".Lang" $langCode) 0 }}{{ .RelPermalink }}{{ else }}/{{ $langCode }}/{{ end }}{{ end }}" 
+                           class="{{ if $isCurrentLang }}active{{ end }}"
+                           {{ if $isCurrentLang }}aria-current="true"{{ end }}>
+                            {{ partial "flag-icon" $langCode }}
+                            <span>{{ $lang.LanguageName }}</span>
+                        </a>
+                    </li>
+                    {{- end }}
+                    {{- end }}
+                </ul>
+            </div>
+            {{- end }}
+        </div>
+    </nav>
+</header>

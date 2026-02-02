@@ -1,0 +1,139 @@
+baseURL: "https://agenticweb.md/"
+languageCode: en-us
+title: agenticweb.md
+theme: PaperMod
+
+# Enable robots.txt generation
+enableRobotsTXT: true
+
+# Build settings
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+# Minification
+minify:
+  disableXML: true
+  minifyOutput: true
+
+# Single-language configuration
+defaultContentLanguage: en
+defaultContentLanguageInSubdir: false
+
+params:
+  # Site metadata
+  env: production
+  author: innFactory GmbH
+  description: "agenticweb.md - The open standard for AI discovery and capability indexing."
+  keywords: [agenticweb, agenticweb.md, AI agents, MCP, Model Context Protocol, agent skills, AI discovery, capability index, A2A, OpenAPI, llms.txt, marketplaces]
+
+  # Theme settings
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowReadingTime: false
+  ShowShareButtons: false
+  ShowPostNavLinks: false
+  ShowBreadCrumbs: false
+  ShowCodeCopyButtons: true
+  ShowWordCount: false
+  ShowRssButtonInSectionTermList: false
+  UseHugoToc: true
+  disableSpecial1stPost: true
+  disableScrollToTop: false
+  hidemeta: true
+  hideSummary: false
+  showtoc: true
+  tocopen: true
+
+  # Home page settings
+  homeInfoParams:
+    Title: "agenticweb.md"
+    Content: "Your Organization's Front Door to the Agentic Web"
+
+  # Social icons
+  socialIcons:
+    - name: github
+      url: "https://github.com/agenticweb-md/agenticweb.md"
+
+  # Assets
+  assets:
+    favicon: "/images/favicon.ico"
+    favicon16x16: "/images/favicon-16x16.png"
+    favicon32x32: "/images/favicon-32x32.png"
+    apple_touch_icon: "/images/apple-touch-icon.png"
+
+  # Cover image defaults
+  cover:
+    hidden: true
+    hiddenInList: true
+    hiddenInSingle: true
+
+  # Edit link - points to issues for contributions
+  editPost:
+    URL: "https://github.com/agenticweb-md/agenticweb.md/issues/new?template=content-suggestion.md&title=Content+suggestion:+"
+    Text: "Suggest Changes"
+    appendFilePath: false
+
+  # Label for the site
+  label:
+    text: "agenticweb.md"
+    icon: /images/logo.svg
+    iconHeight: 35
+
+menu:
+  footer:
+    - identifier: imprint
+      name: Imprint
+      url: /imprint/
+      weight: 100
+  main:
+    - identifier: home
+      name: Home
+      url: /
+      weight: 1
+    - identifier: spec
+      name: Specification
+      url: /spec/
+      weight: 10
+    - identifier: quickstart
+      name: Quick Start
+      url: /quickstart/
+      weight: 20
+    - identifier: generator
+      name: Generator
+      url: /generator/
+      weight: 25
+    - identifier: examples
+      name: Examples
+      url: /examples/
+      weight: 30
+    - identifier: faq
+      name: FAQ
+      url: /faq/
+      weight: 40
+
+# Syntax highlighting
+pygmentsUseClasses: true
+markup:
+  highlight:
+    noClasses: false
+    anchorLineNos: false
+    codeFences: true
+    guessSyntax: true
+    lineNos: false
+    style: monokai
+  goldmark:
+    renderer:
+      unsafe: true
+
+# Output formats
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+# Taxonomies
+taxonomies:
+  tag: tags
+  category: categories

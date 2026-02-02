@@ -1,0 +1,62 @@
+# English translations for PaperMod theme
+
+# Navigation and UI
+home: "Home"
+search: "Search"
+menu: "Menu"
+share: "Share"
+prev: "Previous"
+next: "Next"
+readMore: "Read more"
+readingTime: "min read"
+words: "words"
+toc: "Table of Contents"
+showToc: "Show Table of Contents"
+hideToc: "Hide Table of Contents"
+subscribe: "Subscribe"
+tags: "Tags"
+categories: "Categories"
+edit: "Edit"
+suggest: "Suggest Changes"
+contents: "Contents"
+
+# Buttons
+copyToClipboard: "Copy to clipboard"
+copied: "Copied!"
+copyCode: "Copy Code"
+codeWasCopied: "Code was copied to clipboard"
+
+# Theme toggle
+lightMode: "Light"
+darkMode: "Dark"
+autoMode: "Auto"
+
+# Dates
+lastUpdated: "Last updated"
+publishedOn: "Published on"
+
+# Search
+searchPlaceholder: "Search..."
+noResults: "No results found"
+
+# 404
+pageNotFound: "Page not found"
+pageNotFoundDesc: "The page you requested could not be found."
+
+# Custom for agenticweb.md
+getStarted: "Get Started"
+readSpec: "Read the Spec"
+viewExamples: "View Examples"
+viewOnGitHub: "View on GitHub"
+quickStart: "Quick Start"
+specification: "Specification"
+examples: "Examples"
+faq: "FAQ"
+
+# Footer
+poweredBy: "Powered by"
+theme: "Theme"
+
+# Language names
+english: "English"
+german: "Deutsch"
