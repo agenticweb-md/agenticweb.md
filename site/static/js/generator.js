@@ -27,6 +27,7 @@ class AgenticWebGenerator {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
     this.capabilities = [];
+    this.links = [];
     this.init();
   }
 
@@ -81,50 +82,14 @@ class AgenticWebGenerator {
         </div>
 
         <h3>Links</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="docs-url">Documentation</label>
-            <input type="url" id="docs-url" placeholder="https://docs.yourcompany.com">
-          </div>
-          <div class="form-group">
-            <label for="privacy-url">Privacy Policy</label>
-            <input type="url" id="privacy-url" placeholder="https://yourcompany.com/privacy">
-          </div>
-        </div>
+        <div id="links-list"></div>
+        <button type="button" id="add-link" class="btn btn-secondary">+ Add Link</button>
 
-        <h3>Permissions</h3>
-        <div class="permissions-grid">
-          <label><input type="checkbox" id="perm-read" checked> Read content</label>
-          <label><input type="checkbox" id="perm-cite" checked> Cite with attribution</label>
-          <label><input type="checkbox" id="perm-summarize" checked> Summarize content</label>
-          <label><input type="checkbox" id="perm-train"> Use for training</label>
-          <label><input type="checkbox" id="perm-execute" checked> Execute APIs/tools</label>
-          <label><input type="checkbox" id="perm-cache" checked> Cache content</label>
-        </div>
-
-        <h3>Compliance</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label><input type="checkbox" id="gdpr-compliant"> GDPR Compliant</label>
-          </div>
-          <div class="form-group">
-            <label for="ai-act-level">AI Act Risk Level</label>
-            <select id="ai-act-level">
-              <option value="">Not specified</option>
-              <option value="minimal">Minimal</option>
-              <option value="limited">Limited</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-        </div>
-
-        <h3>Categories</h3>
+        <h3>Trust</h3>
         <div class="form-group">
-          <label for="categories">Standard Categories</label>
-          <select id="categories" multiple>
-            ${STANDARD_CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('')}
-          </select>
-          <small>Hold Ctrl/Cmd to select multiple</small>
+          <label for="allowed-origins">Allowed Origins</label>
+          <input type="text" id="allowed-origins" placeholder="https://example.com, https://api.example.com">
+          <small>Comma-separated HTTPS URLs</small>
         </div>
 
         <h3>Capabilities</h3>
@@ -149,11 +114,65 @@ class AgenticWebGenerator {
   }
 
   attachEventListeners() {
+    document.getElementById('add-link').addEventListener('click', () => this.addLink());
     document.getElementById('add-capability').addEventListener('click', () => this.addCapability());
     document.getElementById('generate-btn').addEventListener('click', () => this.generate());
     document.getElementById('copy-btn').addEventListener('click', () => this.copyToClipboard());
     document.getElementById('download-btn').addEventListener('click', () => this.download());
     document.getElementById('edit-btn').addEventListener('click', () => this.showForm());
+  }
+
+  addLink() {
+    const id = Date.now();
+    this.links.push(id);
+    
+    const list = document.getElementById('links-list');
+    const div = document.createElement('div');
+    div.className = 'capability-item';
+    div.id = `link-${id}`;
+    div.innerHTML = `
+      <div class="capability-header">
+        <span>Link</span>
+        <button type="button" class="remove-link" data-id="${id}">&times;</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Name *</label>
+          <input type="text" class="link-name" data-id="${id}" placeholder="docs, privacy, terms">
+        </div>
+        <div class="form-group">
+          <label>URL *</label>
+          <input type="url" class="link-url" data-id="${id}" placeholder="https://example.com/docs">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" class="link-description" data-id="${id}" placeholder="Optional description">
+      </div>
+      <div class="form-group">
+        <label><input type="checkbox" class="link-has-perms" data-id="${id}"> Set custom permissions</label>
+      </div>
+      <div class="permissions-section" id="link-perms-${id}" style="display: none;">
+        <div class="permissions-grid">
+          <label><input type="checkbox" class="link-perm-read" data-id="${id}" checked> Read</label>
+          <label><input type="checkbox" class="link-perm-cite" data-id="${id}" checked> Cite</label>
+          <label><input type="checkbox" class="link-perm-summarize" data-id="${id}" checked> Summarize</label>
+          <label><input type="checkbox" class="link-perm-train" data-id="${id}"> Train</label>
+          <label><input type="checkbox" class="link-perm-cache" data-id="${id}" checked> Cache</label>
+        </div>
+      </div>
+    `;
+    list.appendChild(div);
+
+    div.querySelector('.remove-link').addEventListener('click', () => this.removeLink(id));
+    div.querySelector('.link-has-perms').addEventListener('change', (e) => {
+      document.getElementById(`link-perms-${id}`).style.display = e.target.checked ? 'block' : 'none';
+    });
+  }
+
+  removeLink(id) {
+    this.links = this.links.filter(l => l !== id);
+    document.getElementById(`link-${id}`).remove();
   }
 
   addCapability() {
@@ -251,12 +270,54 @@ class AgenticWebGenerator {
           </div>
         </div>
       </div>
+      <div class="form-group">
+        <label><input type="checkbox" class="cap-has-perms" data-id="${id}"> Set custom permissions</label>
+      </div>
+      <div class="permissions-section" id="cap-perms-${id}" style="display: none;">
+        <div class="permissions-grid">
+          <label><input type="checkbox" class="cap-perm-read" data-id="${id}" checked> Read</label>
+          <label><input type="checkbox" class="cap-perm-cite" data-id="${id}" checked> Cite</label>
+          <label><input type="checkbox" class="cap-perm-summarize" data-id="${id}" checked> Summarize</label>
+          <label><input type="checkbox" class="cap-perm-train" data-id="${id}"> Train</label>
+          <label><input type="checkbox" class="cap-perm-execute" data-id="${id}" checked> Execute</label>
+          <label><input type="checkbox" class="cap-perm-cache" data-id="${id}" checked> Cache</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label><input type="checkbox" class="cap-has-compliance" data-id="${id}"> Add AI Act compliance</label>
+      </div>
+      <div class="compliance-section" id="cap-compliance-${id}" style="display: none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>AI Act Risk Level</label>
+            <select class="cap-ai-risk" data-id="${id}">
+              <option value="">Not specified</option>
+              <option value="minimal">Minimal</option>
+              <option value="limited">Limited</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" class="cap-human-oversight" data-id="${id}"> Human oversight required</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Conformity URL</label>
+          <input type="url" class="cap-conformity-url" data-id="${id}" placeholder="https://example.com/ai-act/conformity">
+        </div>
+      </div>
     `;
     list.appendChild(div);
 
     // Event listeners
     div.querySelector('.remove-cap').addEventListener('click', () => this.removeCapability(id));
     div.querySelector('.cap-kind').addEventListener('change', (e) => this.onKindChange(id, e.target.value));
+    div.querySelector('.cap-has-perms').addEventListener('change', (e) => {
+      document.getElementById(`cap-perms-${id}`).style.display = e.target.checked ? 'block' : 'none';
+    });
+    div.querySelector('.cap-has-compliance').addEventListener('change', (e) => {
+      document.getElementById(`cap-compliance-${id}`).style.display = e.target.checked ? 'block' : 'none';
+    });
   }
 
   removeCapability(id) {
@@ -307,34 +368,37 @@ class AgenticWebGenerator {
     if (getValue('security-email')) contacts.security = `mailto:${getValue('security-email')}`;
     if (Object.keys(contacts).length) data.contacts = contacts;
 
-    // Links
-    const links = {};
-    if (getValue('docs-url')) links.docs = getValue('docs-url');
-    if (getValue('privacy-url')) links.privacy = getValue('privacy-url');
-    if (Object.keys(links).length) data.links = links;
+    // Links (array)
+    const links = this.links.map(id => {
+      const link = {
+        name: document.querySelector(`.link-name[data-id="${id}"]`).value,
+        url: document.querySelector(`.link-url[data-id="${id}"]`).value
+      };
+      
+      const desc = document.querySelector(`.link-description[data-id="${id}"]`).value;
+      if (desc) link.description = desc;
 
-    // Permissions
-    data.permissions = {
-      read: getChecked('perm-read'),
-      cite: getChecked('perm-cite'),
-      summarize: getChecked('perm-summarize'),
-      train: getChecked('perm-train'),
-      execute: getChecked('perm-execute'),
-      cache: getChecked('perm-cache')
-    };
+      // Permissions (only if checkbox checked)
+      if (document.querySelector(`.link-has-perms[data-id="${id}"]`).checked) {
+        link.permissions = {
+          read: document.querySelector(`.link-perm-read[data-id="${id}"]`).checked,
+          cite: document.querySelector(`.link-perm-cite[data-id="${id}"]`).checked,
+          summarize: document.querySelector(`.link-perm-summarize[data-id="${id}"]`).checked,
+          train: document.querySelector(`.link-perm-train[data-id="${id}"]`).checked,
+          cache: document.querySelector(`.link-perm-cache[data-id="${id}"]`).checked
+        };
+      }
 
-    // Categories
-    const selected = Array.from(document.getElementById('categories').selectedOptions).map(o => o.value);
-    if (selected.length) {
-      data.categories = { standard: selected };
+      return link;
+    }).filter(l => l.name && l.url);
+    
+    if (links.length) data.links = links;
+
+    // Trust
+    const allowedOrigins = getValue('allowed-origins').split(',').map(s => s.trim()).filter(Boolean);
+    if (allowedOrigins.length) {
+      data.trust = { allowed_origins: allowedOrigins };
     }
-
-    // Compliance
-    const compliance = {};
-    if (getChecked('gdpr-compliant')) compliance.gdpr_compliant = true;
-    const aiLevel = getValue('ai-act-level');
-    if (aiLevel) compliance.ai_act_risk_level = aiLevel;
-    if (Object.keys(compliance).length) data.compliance = compliance;
 
     // Capabilities
     data.capabilities = this.capabilities.map(id => {
@@ -355,6 +419,34 @@ class AgenticWebGenerator {
         cap.auth_required = true;
         const authUrl = document.querySelector(`.cap-auth-url[data-id="${id}"]`).value;
         if (authUrl) cap.auth_registration = authUrl;
+      }
+
+      // Permissions (only if checkbox checked)
+      if (document.querySelector(`.cap-has-perms[data-id="${id}"]`).checked) {
+        cap.permissions = {
+          read: document.querySelector(`.cap-perm-read[data-id="${id}"]`).checked,
+          cite: document.querySelector(`.cap-perm-cite[data-id="${id}"]`).checked,
+          summarize: document.querySelector(`.cap-perm-summarize[data-id="${id}"]`).checked,
+          train: document.querySelector(`.cap-perm-train[data-id="${id}"]`).checked,
+          execute: document.querySelector(`.cap-perm-execute[data-id="${id}"]`).checked,
+          cache: document.querySelector(`.cap-perm-cache[data-id="${id}"]`).checked
+        };
+      }
+
+      // Compliance (only if checkbox checked)
+      if (document.querySelector(`.cap-has-compliance[data-id="${id}"]`).checked) {
+        const compliance = {};
+        const aiRisk = document.querySelector(`.cap-ai-risk[data-id="${id}"]`).value;
+        if (aiRisk) compliance.ai_act_risk_level = aiRisk;
+        
+        if (document.querySelector(`.cap-human-oversight[data-id="${id}"]`).checked) {
+          compliance.human_oversight_required = true;
+        }
+        
+        const conformityUrl = document.querySelector(`.cap-conformity-url[data-id="${id}"]`).value;
+        if (conformityUrl) compliance.conformity_url = conformityUrl;
+        
+        if (Object.keys(compliance).length) cap.compliance = compliance;
       }
 
       // Kind-specific
@@ -435,16 +527,8 @@ class AgenticWebGenerator {
       addLine('links', data.links);
       lines.push('');
     }
-    if (data.permissions) {
-      addLine('permissions', data.permissions);
-      lines.push('');
-    }
-    if (data.categories) {
-      addLine('categories', data.categories);
-      lines.push('');
-    }
-    if (data.compliance) {
-      addLine('compliance', data.compliance);
+    if (data.trust) {
+      addLine('trust', data.trust);
       lines.push('');
     }
     if (data.capabilities?.length) {
