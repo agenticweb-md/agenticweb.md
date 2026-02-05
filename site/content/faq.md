@@ -44,7 +44,6 @@ for **external** discovery at your domain root.
 ```yaml
 ---
 agenticweb: "1"
-name: my-company
 description: "Short discovery description."
 capabilities:
   - kind: api

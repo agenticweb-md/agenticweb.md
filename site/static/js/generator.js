@@ -40,14 +40,9 @@ class AgenticWebGenerator {
       <div class="generator-form">
         <h3>Basic Information</h3>
         <div class="form-group">
-          <label for="org-name">Organization Slug *</label>
-          <input type="text" id="org-name" placeholder="your-company" pattern="[a-z0-9-]+" required>
-          <small>Lowercase, alphanumeric, hyphens only</small>
-        </div>
-        <div class="form-group">
           <label for="org-description">Description *</label>
-          <input type="text" id="org-description" placeholder="Short description of what you offer" maxlength="160" required>
-          <small>Max 160 characters</small>
+          <input type="text" id="org-description" placeholder="Short description of what you offer" maxlength="400" required>
+          <small>Max 400 characters</small>
         </div>
 
         <h3>Organization Details</h3>
@@ -291,7 +286,6 @@ class AgenticWebGenerator {
 
     const data = {
       agenticweb: '1',
-      name: getValue('org-name'),
       description: getValue('org-description'),
       updated: new Date().toISOString().split('T')[0]
     };
@@ -425,7 +419,6 @@ class AgenticWebGenerator {
     };
 
     addLine('agenticweb', data.agenticweb);
-    addLine('name', data.name);
     addLine('description', data.description);
     addLine('updated', data.updated);
     lines.push('');
