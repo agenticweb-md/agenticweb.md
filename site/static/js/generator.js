@@ -12,9 +12,10 @@ const STANDARD_CATEGORIES = [
 ];
 
 const CAPABILITY_KINDS = [
-  { value: 'api', label: 'API (REST/GraphQL)' },
-  { value: 'mcp', label: 'MCP Server' },
   { value: 'skill', label: 'Skill (SKILL.md)' },
+  { value: 'mcp', label: 'MCP Server' },
+  { value: 'api', label: 'API (REST/GraphQL)' },
+  { value: 'model', label: 'AI Model (LLM/Embedding)' },
   { value: 'a2a', label: 'A2A Agent' },
   { value: 'docs', label: 'Documentation' },
   { value: 'data', label: 'Data/Dataset' },
@@ -233,6 +234,28 @@ class AgenticWebGenerator {
           <option value="stdio">stdio</option>
         </select>
       </div>
+      <div class="kind-specific kind-model" style="display: none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Source</label>
+            <input type="text" class="cap-source" data-id="${id}" placeholder="huggingface, openai, anthropic">
+          </div>
+          <div class="form-group">
+            <label>Model ID</label>
+            <input type="text" class="cap-model-id" data-id="${id}" placeholder="org/model-name">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Model Card URL</label>
+            <input type="url" class="cap-model-card" data-id="${id}" placeholder="https://huggingface.co/org/model">
+          </div>
+          <div class="form-group">
+            <label>API Compatibility</label>
+            <input type="text" class="cap-api-compat" data-id="${id}" placeholder="openai, anthropic">
+          </div>
+        </div>
+      </div>
     `;
     list.appendChild(div);
 
@@ -347,6 +370,16 @@ class AgenticWebGenerator {
       }
       if (cap.kind === 'mcp') {
         cap.transport = document.querySelector(`.cap-transport[data-id="${id}"]`).value;
+      }
+      if (cap.kind === 'model') {
+        const source = document.querySelector(`.cap-source[data-id="${id}"]`).value;
+        if (source) cap.source = source;
+        const modelId = document.querySelector(`.cap-model-id[data-id="${id}"]`).value;
+        if (modelId) cap.model_id = modelId;
+        const modelCard = document.querySelector(`.cap-model-card[data-id="${id}"]`).value;
+        if (modelCard) cap.model_card = modelCard;
+        const apiCompat = document.querySelector(`.cap-api-compat[data-id="${id}"]`).value;
+        if (apiCompat) cap.api_compatibility = apiCompat;
       }
 
       return cap;
