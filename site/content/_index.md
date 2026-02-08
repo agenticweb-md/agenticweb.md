@@ -1,6 +1,6 @@
 ---
 title: "agenticweb.md - Open Standard for AI Discovery"
-description: "Publish one file at your domain root to declare who you are and where your agent capabilities live."
+description: "Your Organization's Front Door to the Agentic Web"
 date: 2026-02-02
 layout: "home"
 keywords: ["agenticweb.md", "AI agent discovery", "capability index", "MCP", "A2A", "SKILL.md", "OpenAPI", "marketplaces"]

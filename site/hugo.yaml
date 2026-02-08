@@ -26,6 +26,7 @@ params:
   env: production
   author: innFactory GmbH
   description: "agenticweb.md - The open standard for AI discovery and capability indexing."
+  images: ["images/agenticweb-md.png"]
   keywords: [agenticweb, agenticweb.md, AI agents, MCP, Model Context Protocol, agent skills, AI discovery, capability index, A2A, OpenAPI, llms.txt, marketplaces]
 
   # Theme settings
